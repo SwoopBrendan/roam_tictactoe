@@ -8,7 +8,8 @@ class Board extends Component {
         this.state = {
             cells: Array(9).fill(null),
             xPlayerNext: true,
-            game: props.game
+            game: props.game,
+            moveCount: 0
         }
     }
 
@@ -39,14 +40,15 @@ class Board extends Component {
         cells[i] = this.state.xPlayerNext ? 'X' : 'O';
         this.setState({ 
             cells: cells,
-            xPlayerNext: !this.state.xPlayerNext
+            xPlayerNext: !this.state.xPlayerNext,
+            moveCount: this.state.moveCount + 1
         });
 
         let data = {
-            "game_id": 1,
-            "move_number": 1,
-            "location": 1,
-            "player": 'X'
+            game_id: this.state.game.id,
+            move_number: this.state.moveCount,
+            location: i,
+            player: this.state.xPlayerNext ? 'X' : 'O'
         };
 
         this.saveHistory(data);

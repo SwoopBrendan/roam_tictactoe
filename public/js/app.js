@@ -60001,7 +60001,8 @@ function (_Component) {
     _this.state = {
       cells: Array(9).fill(null),
       xPlayerNext: true,
-      game: props.game
+      game: props.game,
+      moveCount: 0
     };
     return _this;
   }
@@ -60031,13 +60032,14 @@ function (_Component) {
       cells[i] = this.state.xPlayerNext ? 'X' : 'O';
       this.setState({
         cells: cells,
-        xPlayerNext: !this.state.xPlayerNext
+        xPlayerNext: !this.state.xPlayerNext,
+        moveCount: this.state.moveCount + 1
       });
       var data = {
-        "game_id": 1,
-        "move_number": 1,
-        "location": 1,
-        "player": 'X'
+        game_id: this.state.game.id,
+        move_number: this.state.moveCount,
+        location: i,
+        player: this.state.xPlayerNext ? 'X' : 'O'
       };
       this.saveHistory(data);
     }
@@ -60167,7 +60169,8 @@ function (_Component) {
         return response.json();
       }).then(function (game) {
         _this.setState({
-          game: game
+          game: game,
+          showBoard: true
         });
       });
     });
@@ -60227,7 +60230,7 @@ function (_Component) {
       }, "End Game") : react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
         className: "btn btn-primary",
         onClick: function onClick() {
-          [_this3.handleGameStatus(), _this3.startGame()];
+          _this3.startGame();
         }
       }, "New Game"), this.state.showBoard ? react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Board__WEBPACK_IMPORTED_MODULE_3__["default"], {
         game: this.state.game

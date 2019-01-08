@@ -27,7 +27,10 @@ class Main extends Component {
         fetch('/api/game/create').then(response => {
             return response.json();
         }).then(game => {
-            this.setState({ game: game });
+            this.setState({ 
+                game: game,
+                showBoard: true
+            });
         });
     }
 
@@ -61,7 +64,7 @@ class Main extends Component {
                 { this.state.showBoard ? (
                     <button className="btn btn-warning" onClick={() => {this.handleGameStatus()}}>End Game</button>
                 ) : (
-                    <button className="btn btn-primary" onClick={() => {[this.handleGameStatus(), this.startGame()]}}>New Game</button>
+                    <button className="btn btn-primary" onClick={() => {this.startGame()}}>New Game</button>
                 ) }
 
                 { this.state.showBoard ? (<Board game={this.state.game} />) : '' }
