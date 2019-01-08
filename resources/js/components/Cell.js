@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 
-class Cell extends Component {
-
-    render() {
-        return (
-          <button className="square">
-            {/* TODO */}
-          </button>
-        );
-    }
-
+function Cell(props) {
+    return (
+        <button className="square" onClick={props.onClick}>
+            {props.value}
+        </button>
+    );
 }
 
 export default Cell;
