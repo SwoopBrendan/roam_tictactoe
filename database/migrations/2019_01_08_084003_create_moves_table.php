@@ -15,6 +15,10 @@ class CreateMovesTable extends Migration
     {
         Schema::create('moves', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('game_id')->unsigned();
+            $table->integer('move_number');
+            $table->string('location');
+            $table->string('player');
             $table->timestamps();
         });
     }
