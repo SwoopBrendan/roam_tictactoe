@@ -9,6 +9,9 @@ use App\Services\MoveService;
 
 class GameController extends Controller
 {
+    /**
+     * GameController constructor
+     */
     public function __construct(GameService $gameService, MoveService $moveService)
     {   
         $this->gameService = $gameService;
@@ -22,7 +25,9 @@ class GameController extends Controller
      */
     public function index()
     {
-        return $this->gameService->getGames();
+        $this->games = $this->gameService->getGames();
+
+        return $this->games->toJson();
     }
 
     /**
@@ -32,7 +37,9 @@ class GameController extends Controller
      */
     public function create()
     {
-        return $this->gameService->createGame();
+        $this->game = $this->gameService->createGame();
+
+        return $this->game->toJson();
     }
 
     /**
