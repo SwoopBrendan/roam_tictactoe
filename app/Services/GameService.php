@@ -16,7 +16,8 @@ class GameService
     public function getGameById($id)
     {
         $game = Game::find($id);
-        $moves = Move::where('game_id', $id);
+        $moves = Move::where('game_id', $id)->get();
+
         $data = [
             'game' => $game,
             'moves' => $moves

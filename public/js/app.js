@@ -60175,11 +60175,28 @@ function (_Component) {
       });
     });
 
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "continueGame", function (gameId) {
+      fetch('/api/game/' + gameId).then(function (game) {
+        _this.setState({
+          game: game.game,
+          moveHistory: game.moves,
+          showBoard: true
+        });
+      });
+
+      _this.rebuildGameBoard();
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "rebuildGameBoard", function () {});
+
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "buildGameRows", function (game, key) {
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", {
         key: game.id
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, game.id), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, "Game ", game.id), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, game.completed == 1 ? 'Complete' : 'Incomplete'), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, game.created_at), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, game.completed ? '' : react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-        className: "btn btn-success"
+        className: "btn btn-success",
+        onClick: function onClick() {
+          _this.continueGame(game.id);
+        }
       }, "Continue")));
     });
 

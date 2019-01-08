@@ -34,6 +34,23 @@ class Main extends Component {
         });
     }
 
+    continueGame = (gameId) => {
+        fetch('/api/game/' + gameId)
+        .then(game => {
+            this.setState({ 
+                game: game.game,
+                moveHistory: game.moves,
+                showBoard: true
+            });
+        });
+
+        this.rebuildGameBoard();
+    }
+
+    rebuildGameBoard = () => {
+        
+    }
+
     buildGameRows = (game, key) => {
         return (
             <tr key={game.id}>
@@ -41,7 +58,7 @@ class Main extends Component {
                 <td>Game {game.id}</td>
                 <td>{game.completed == 1 ? 'Complete' : 'Incomplete'}</td>
                 <td>{game.created_at}</td>
-                <td>{game.completed ? '' : (<button className="btn btn-success">Continue</button>)}</td>
+                <td>{game.completed ? '' : (<button className="btn btn-success" onClick={() => {this.continueGame(game.id)}}>Continue</button>)}</td>
             </tr>
         );
     }
@@ -96,6 +113,7 @@ class Main extends Component {
             </div>
         );
     }
+
 }
 
 export default Main;
