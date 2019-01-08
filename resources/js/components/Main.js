@@ -10,19 +10,25 @@ class Main extends Component {
         super(props);
         this.state = {
             games: [],
+            game: {},
             showBoard: false
         }
     }
 
     componentDidMount() {
-        /* fetch API in action */
-        fetch('/api/game')
-            .then(response => {
-                return response.json();
-            })
-            .then(games => {
-                this.setState({ games: games });
-            });
+        fetch('/api/game').then(response => {
+            return response.json();
+        }).then(games => {
+            this.setState({ games: games });
+        });
+    }
+
+    startGame = () => {
+        fetch('/api/game/create').then(response => {
+            return response.json();
+        }).then(game => {
+            this.setState({ game: game });
+        });
     }
 
     buildGameRows = (game, key) => {
@@ -37,9 +43,9 @@ class Main extends Component {
         );
     }
 
-    displayBoard = () => {
+    handleGameStatus = () => {
         this.setState({
-            displayBoard: !this.state.displayBoard
+            showBoard: !this.state.showBoard
         });
     }
 
@@ -47,13 +53,18 @@ class Main extends Component {
         const games = _.map(
             this.state.games,
             this.buildGameRows
-          );
+        );
 
-          return (
+        return (
             <div style={{width: '50%', margin: 'auto'}}>
-                <button className="btn btn-primary" onClick={this.displayBoard}>{this.state.displayBoard ? 'End Game' : 'New Game'}</button>
 
-                { this.state.displayBoard ? (<Board />) : '' }
+                { this.state.showBoard ? (
+                    <button className="btn btn-warning" onClick={() => {this.handleGameStatus()}}>End Game</button>
+                ) : (
+                    <button className="btn btn-primary" onClick={() => {[this.handleGameStatus(), this.startGame()]}}>New Game</button>
+                ) }
+
+                { this.state.showBoard ? (<Board game={this.state.game} />) : '' }
 
                 <hr/>
                 <h3>Saved Games</h3>

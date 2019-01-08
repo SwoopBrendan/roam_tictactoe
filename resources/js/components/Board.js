@@ -7,11 +7,12 @@ class Board extends Component {
         super(props);
         this.state = {
             cells: Array(9).fill(null),
-            xPlayerNext: true
+            xPlayerNext: true,
+            game: props.game
         }
     }
 
-    function calculateWinner(squares) {
+    calculateWinner(cells) {
         const lines = [
           [0, 1, 2],
           [3, 4, 5],
@@ -25,8 +26,8 @@ class Board extends Component {
 
         for (let i = 0; i < lines.length; i++) {
             const [a, b, c] = lines[i];
-            if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-                return squares[a];
+            if (cells[a] && cells[a] === cells[b] && cells[a] === cells[c]) {
+                return cells[a];
             }
         }
 
@@ -40,6 +41,27 @@ class Board extends Component {
             cells: cells,
             xPlayerNext: !this.state.xPlayerNext
         });
+
+        let data = {
+            "game_id": 1,
+            "move_number": 1,
+            "location": 1,
+            "player": 'X'
+        };
+
+        this.saveHistory(data);
+    }
+
+    saveHistory = (data) => {
+        fetch('/api/game', {
+            method: 'post',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify(data)
+        }).then(response => {
+            return response.json();
+        }).then(games => {
+            this.setState({ games: games });
+        });
     }
 
     renderCell(i) {
@@ -52,10 +74,10 @@ class Board extends Component {
     }
     
     render() {
-        const winner = calculateWinner(this.state.squares);
+        const winner = this.calculateWinner(this.state.cells);
         let status;
         if (winner) {
-            statue = 'Winner: ' + winner;
+            status = 'Winner: ' + winner;
         } else {
             status = 'Next Player: ' + (this.state.xPlayerNext ? 'X' : '0');
         }

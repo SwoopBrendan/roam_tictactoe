@@ -59932,9 +59932,179 @@ if (token) {
   !*** ./resources/js/components/Board.js ***!
   \******************************************/
 /*! exports provided: default */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nSyntaxError: /private/var/www/roam_tictactoe/resources/js/components/Board.js: Unexpected token (14:13)\n\n\u001b[0m \u001b[90m 12 | \u001b[39m    }\u001b[0m\n\u001b[0m \u001b[90m 13 | \u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 14 | \u001b[39m    \u001b[36mfunction\u001b[39m calculateWinner(squares) {\u001b[0m\n\u001b[0m \u001b[90m    | \u001b[39m             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 15 | \u001b[39m        \u001b[36mconst\u001b[39m lines \u001b[33m=\u001b[39m [\u001b[0m\n\u001b[0m \u001b[90m 16 | \u001b[39m          [\u001b[35m0\u001b[39m\u001b[33m,\u001b[39m \u001b[35m1\u001b[39m\u001b[33m,\u001b[39m \u001b[35m2\u001b[39m]\u001b[33m,\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 17 | \u001b[39m          [\u001b[35m3\u001b[39m\u001b[33m,\u001b[39m \u001b[35m4\u001b[39m\u001b[33m,\u001b[39m \u001b[35m5\u001b[39m]\u001b[33m,\u001b[39m\u001b[0m\n    at _class.raise (/private/var/www/roam_tictactoe/node_modules/@babel/parser/lib/index.js:4051:15)\n    at _class.unexpected (/private/var/www/roam_tictactoe/node_modules/@babel/parser/lib/index.js:5382:16)\n    at _class.parseClassMemberWithIsStatic (/private/var/www/roam_tictactoe/node_modules/@babel/parser/lib/index.js:8449:12)\n    at _class.parseClassMember (/private/var/www/roam_tictactoe/node_modules/@babel/parser/lib/index.js:8348:10)\n    at /private/var/www/roam_tictactoe/node_modules/@babel/parser/lib/index.js:8302:16\n    at _class.withTopicForbiddingContext (/private/var/www/roam_tictactoe/node_modules/@babel/parser/lib/index.js:7429:14)\n    at _class.parseClassBody (/private/var/www/roam_tictactoe/node_modules/@babel/parser/lib/index.js:8277:10)\n    at _class.parseClass (/private/var/www/roam_tictactoe/node_modules/@babel/parser/lib/index.js:8248:10)\n    at _class.parseStatementContent (/private/var/www/roam_tictactoe/node_modules/@babel/parser/lib/index.js:7533:21)\n    at _class.parseStatement (/private/var/www/roam_tictactoe/node_modules/@babel/parser/lib/index.js:7505:17)\n    at _class.parseBlockOrModuleBlockBody (/private/var/www/roam_tictactoe/node_modules/@babel/parser/lib/index.js:8073:23)\n    at _class.parseBlockBody (/private/var/www/roam_tictactoe/node_modules/@babel/parser/lib/index.js:8060:10)\n    at _class.parseTopLevel (/private/var/www/roam_tictactoe/node_modules/@babel/parser/lib/index.js:7470:10)\n    at _class.parse (/private/var/www/roam_tictactoe/node_modules/@babel/parser/lib/index.js:8915:17)\n    at parse (/private/var/www/roam_tictactoe/node_modules/@babel/parser/lib/index.js:10946:38)\n    at parser (/private/var/www/roam_tictactoe/node_modules/@babel/core/lib/transformation/normalize-file.js:170:34)\n    at normalizeFile (/private/var/www/roam_tictactoe/node_modules/@babel/core/lib/transformation/normalize-file.js:138:11)\n    at runSync (/private/var/www/roam_tictactoe/node_modules/@babel/core/lib/transformation/index.js:44:43)\n    at runAsync (/private/var/www/roam_tictactoe/node_modules/@babel/core/lib/transformation/index.js:35:14)\n    at process.nextTick (/private/var/www/roam_tictactoe/node_modules/@babel/core/lib/transform.js:34:34)\n    at process._tickCallback (internal/process/next_tick.js:61:11)");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Cell__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Cell */ "./resources/js/components/Cell.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+var Board =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Board, _Component);
+
+  function Board(props) {
+    var _this;
+
+    _classCallCheck(this, Board);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Board).call(this, props));
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "saveHistory", function (data) {
+      fetch('/api/game', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      }).then(function (response) {
+        return response.json();
+      }).then(function (games) {
+        _this.setState({
+          games: games
+        });
+      });
+    });
+
+    _this.state = {
+      cells: Array(9).fill(null),
+      xPlayerNext: true,
+      game: props.game
+    };
+    return _this;
+  }
+
+  _createClass(Board, [{
+    key: "calculateWinner",
+    value: function calculateWinner(cells) {
+      var lines = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+
+      for (var i = 0; i < lines.length; i++) {
+        var _lines$i = _slicedToArray(lines[i], 3),
+            a = _lines$i[0],
+            b = _lines$i[1],
+            c = _lines$i[2];
+
+        if (cells[a] && cells[a] === cells[b] && cells[a] === cells[c]) {
+          return cells[a];
+        }
+      }
+
+      return null;
+    }
+  }, {
+    key: "handleClick",
+    value: function handleClick(i) {
+      var cells = this.state.cells.slice();
+      cells[i] = this.state.xPlayerNext ? 'X' : 'O';
+      this.setState({
+        cells: cells,
+        xPlayerNext: !this.state.xPlayerNext
+      });
+      var data = {
+        "game_id": 1,
+        "move_number": 1,
+        "location": 1,
+        "player": 'X'
+      };
+      this.saveHistory(data);
+    }
+  }, {
+    key: "renderCell",
+    value: function renderCell(i) {
+      var _this2 = this;
+
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Cell__WEBPACK_IMPORTED_MODULE_1__["default"], {
+        value: this.state.cells[i],
+        onClick: function onClick() {
+          return _this2.handleClick(i);
+        }
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var winner = this.calculateWinner(this.state.cells);
+      var status;
+
+      if (winner) {
+        status = 'Winner: ' + winner;
+      } else {
+        status = 'Next Player: ' + (this.state.xPlayerNext ? 'X' : '0');
+      }
+
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "status"
+      }, status), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "board-row"
+      }, this.renderCell(0), this.renderCell(1), this.renderCell(2)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "board-row"
+      }, this.renderCell(3), this.renderCell(4), this.renderCell(5)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "board-row"
+      }, this.renderCell(6), this.renderCell(7), this.renderCell(8)));
+    }
+  }]);
+
+  return Board;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (Board);
+
+/***/ }),
+
+/***/ "./resources/js/components/Cell.js":
+/*!*****************************************!*\
+  !*** ./resources/js/components/Cell.js ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function Cell(props) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    className: "square",
+    onClick: props.onClick
+  }, props.value);
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (Cell);
 
 /***/ }),
 
@@ -59992,6 +60162,16 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Main).call(this, props));
 
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "startGame", function () {
+      fetch('/api/game/create').then(function (response) {
+        return response.json();
+      }).then(function (game) {
+        _this.setState({
+          game: game
+        });
+      });
+    });
+
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "buildGameRows", function (game, key) {
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", {
         key: game.id
@@ -60000,14 +60180,15 @@ function (_Component) {
       }, "Continue")));
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "displayBoard", function () {
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleGameStatus", function () {
       _this.setState({
-        displayBoard: !_this.state.displayBoard
+        showBoard: !_this.state.showBoard
       });
     });
 
     _this.state = {
       games: [],
+      game: {},
       showBoard: false
     };
     return _this;
@@ -60018,7 +60199,6 @@ function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      /* fetch API in action */
       fetch('/api/game').then(function (response) {
         return response.json();
       }).then(function (games) {
@@ -60030,6 +60210,8 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this3 = this;
+
       var games = lodash__WEBPACK_IMPORTED_MODULE_0__["map"](this.state.games, this.buildGameRows);
 
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -60037,10 +60219,19 @@ function (_Component) {
           width: '50%',
           margin: 'auto'
         }
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+      }, this.state.showBoard ? react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+        className: "btn btn-warning",
+        onClick: function onClick() {
+          _this3.handleGameStatus();
+        }
+      }, "End Game") : react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
         className: "btn btn-primary",
-        onClick: this.displayBoard
-      }, this.state.displayBoard ? 'End Game' : 'New Game'), this.state.displayBoard ? react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Board__WEBPACK_IMPORTED_MODULE_3__["default"], null) : '', react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("hr", null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h3", null, "Saved Games"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null), lodash__WEBPACK_IMPORTED_MODULE_0__["isEmpty"](this.state.games) ? react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h5", null, "No Game History")) : react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("table", {
+        onClick: function onClick() {
+          [_this3.handleGameStatus(), _this3.startGame()];
+        }
+      }, "New Game"), this.state.showBoard ? react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Board__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        game: this.state.game
+      }) : '', react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("hr", null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h3", null, "Saved Games"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null), lodash__WEBPACK_IMPORTED_MODULE_0__["isEmpty"](this.state.games) ? react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h5", null, "No Game History")) : react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("table", {
         className: "table"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Id"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Name"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Completed"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Started"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Action"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tbody", null, games)));
     }

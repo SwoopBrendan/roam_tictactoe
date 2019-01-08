@@ -30,6 +30,8 @@ class GameService
      */
     public function createGame()
     {
-        return new Game();
+        $game =  new Game();
+
+        return $game;
     }
 }

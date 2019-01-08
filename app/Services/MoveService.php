@@ -20,6 +20,8 @@ class MoveService
         $move->location = $request->get('location');
         $move->player = $request->get('player');
 
-        return $move->save();
+        $move->save();
+
+        return $move;
     }
 }

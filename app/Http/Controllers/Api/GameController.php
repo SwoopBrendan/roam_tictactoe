@@ -25,9 +25,9 @@ class GameController extends Controller
      */
     public function index()
     {
-        $this->games = $this->gameService->getGames();
+        $games = $this->gameService->getGames();
 
-        return $this->games->toJson();
+        return $games->toJson();
     }
 
     /**
@@ -37,9 +37,11 @@ class GameController extends Controller
      */
     public function create()
     {
-        $this->game = $this->gameService->createGame();
+        $game = $this->gameService->createGame();
 
-        return $this->game->toJson();
+        $game->save();
+
+        return $game->toJson();
     }
 
     /**
