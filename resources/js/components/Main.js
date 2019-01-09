@@ -11,6 +11,7 @@ class Main extends Component {
         this.state = {
             games: [],
             game: {},
+            moveHistory: [],
             showBoard: false
         }
     }
@@ -23,32 +24,44 @@ class Main extends Component {
         });
     }
 
+    handleGameStatus = () => {
+        this.setState({
+            showBoard: !this.state.showBoard
+        });
+    }
+
     startGame = () => {
         fetch('/api/game/create').then(response => {
             return response.json();
         }).then(game => {
             this.setState({ 
                 game: game,
-                showBoard: true
+                showBoard: true,
+                moveHistory: []
             });
         });
     }
 
     continueGame = (gameId) => {
-        fetch('/api/game/' + gameId)
-        .then(game => {
-            this.setState({ 
+        fetch('/api/game/' + gameId).then(response => {
+            return response.json();
+        }).then(game => {
+            this.setState({
                 game: game.game,
                 moveHistory: game.moves,
                 showBoard: true
             });
         });
-
-        this.rebuildGameBoard();
     }
 
-    rebuildGameBoard = () => {
-        
+    clearHistory = () => {
+        fetch('/api/game/clear-history', {
+            method: 'POST'
+        }).then(response => {
+            return response.json();
+        }).then(games => {
+            this.setState({ games: games });
+        });
     }
 
     buildGameRows = (game, key) => {
@@ -61,12 +74,6 @@ class Main extends Component {
                 <td>{game.completed ? '' : (<button className="btn btn-success" onClick={() => {this.continueGame(game.id)}}>Continue</button>)}</td>
             </tr>
         );
-    }
-
-    handleGameStatus = () => {
-        this.setState({
-            showBoard: !this.state.showBoard
-        });
     }
 
     render() {
@@ -84,7 +91,9 @@ class Main extends Component {
                     <button className="btn btn-primary" onClick={() => {this.startGame()}}>New Game</button>
                 ) }
 
-                { this.state.showBoard ? (<Board game={this.state.game} />) : '' }
+                <button className="btn btn-error" onClick={() => { if (window.confirm('Are you sure you wish to delete your games history?')) () => {this.clearHistory()} } } >Clear History</button>
+
+                { this.state.showBoard ? (<Board game={this.state.game} history={this.state.moveHistory} complete={() => {this.completeGame()}} />) : '' }
 
                 <hr/>
                 <h3>Saved Games</h3>

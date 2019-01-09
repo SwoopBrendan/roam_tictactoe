@@ -5,15 +5,41 @@ class Board extends Component {
 
     constructor(props) {
         super(props);
+        const { complete } = props;
         this.state = {
             cells: Array(9).fill(null),
             xPlayerNext: true,
             game: props.game,
-            moveCount: 0
+            moveCount: 0,
+            moveHistory: props.history
         }
     }
 
-    calculateWinner(cells) {
+    componentDidMount() {
+        if (!_.isEmpty(this.state.moveHistory)) {
+            let history = this.state.moveHistory;
+            let cells = this.state.cells.slice();
+    
+            history.forEach(element => {
+                cells[element.location] = element.player;
+            });
+    
+            this.setState({ cells: cells });        
+        }
+    }
+
+    completeGame = () => {
+        fetch('/api/game/complete-game/' + this.state.game.id, {
+            method: 'POST'
+        }).then(response => {
+            return response.json();
+        });
+    }
+
+    calculateWinner() {
+        let cells = this.state.cells;
+        let result = null;
+
         const lines = [
           [0, 1, 2],
           [3, 4, 5],
@@ -28,37 +54,40 @@ class Board extends Component {
         for (let i = 0; i < lines.length; i++) {
             const [a, b, c] = lines[i];
             if (cells[a] && cells[a] === cells[b] && cells[a] === cells[c]) {
-                return cells[a];
+                result = cells[a];
             }
         }
 
-        return null;
+        if (result) {
+            this.completeGame()
+        }
+
+        return result;
     }
 
     handleClick(i) {
         const cells = this.state.cells.slice();
         cells[i] = this.state.xPlayerNext ? 'X' : 'O';
-        this.setState({ 
+        
+        this.setState({
             cells: cells,
             xPlayerNext: !this.state.xPlayerNext,
             moveCount: this.state.moveCount + 1
         });
 
-        let data = {
-            game_id: this.state.game.id,
-            move_number: this.state.moveCount,
-            location: i,
-            player: this.state.xPlayerNext ? 'X' : 'O'
-        };
-
-        this.saveHistory(data);
+        this.saveHistory(i);
     }
 
-    saveHistory = (data) => {
+    saveHistory = (i) => {
         fetch('/api/game', {
             method: 'post',
             headers: {'Content-Type':'application/json'},
-            body: JSON.stringify(data)
+            body: JSON.stringify({
+                game_id: this.state.game.id,
+                move_number: this.state.moveCount,
+                location: i,
+                player: this.state.xPlayerNext ? 'X' : 'O'
+            })
         }).then(response => {
             return response.json();
         }).then(games => {
@@ -76,7 +105,7 @@ class Board extends Component {
     }
     
     render() {
-        const winner = this.calculateWinner(this.state.cells);
+        const winner = this.calculateWinner();
         let status;
         if (winner) {
             status = 'Winner: ' + winner;

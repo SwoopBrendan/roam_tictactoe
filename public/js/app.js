@@ -59982,13 +59982,26 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Board).call(this, props));
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "saveHistory", function (data) {
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "completeGame", function () {
+      fetch('/api/game/complete-game/' + _this.state.game.id, {
+        method: 'POST'
+      }).then(function (response) {
+        return response.json();
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "saveHistory", function (i) {
       fetch('/api/game', {
         method: 'post',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify({
+          game_id: _this.state.game.id,
+          move_number: _this.state.moveCount,
+          location: i,
+          player: _this.state.xPlayerNext ? 'X' : 'O'
+        })
       }).then(function (response) {
         return response.json();
       }).then(function (games) {
@@ -59998,18 +60011,36 @@ function (_Component) {
       });
     });
 
+    var complete = props.complete;
     _this.state = {
       cells: Array(9).fill(null),
       xPlayerNext: true,
       game: props.game,
-      moveCount: 0
+      moveCount: 0,
+      moveHistory: props.history
     };
     return _this;
   }
 
   _createClass(Board, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      if (!_.isEmpty(this.state.moveHistory)) {
+        var history = this.state.moveHistory;
+        var cells = this.state.cells.slice();
+        history.forEach(function (element) {
+          cells[element.location] = element.player;
+        });
+        this.setState({
+          cells: cells
+        });
+      }
+    }
+  }, {
     key: "calculateWinner",
-    value: function calculateWinner(cells) {
+    value: function calculateWinner() {
+      var cells = this.state.cells;
+      var result = null;
       var lines = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
 
       for (var i = 0; i < lines.length; i++) {
@@ -60019,11 +60050,15 @@ function (_Component) {
             c = _lines$i[2];
 
         if (cells[a] && cells[a] === cells[b] && cells[a] === cells[c]) {
-          return cells[a];
+          result = cells[a];
         }
       }
 
-      return null;
+      if (result) {
+        this.completeGame();
+      }
+
+      return result;
     }
   }, {
     key: "handleClick",
@@ -60035,13 +60070,7 @@ function (_Component) {
         xPlayerNext: !this.state.xPlayerNext,
         moveCount: this.state.moveCount + 1
       });
-      var data = {
-        game_id: this.state.game.id,
-        move_number: this.state.moveCount,
-        location: i,
-        player: this.state.xPlayerNext ? 'X' : 'O'
-      };
-      this.saveHistory(data);
+      this.saveHistory(i);
     }
   }, {
     key: "renderCell",
@@ -60058,7 +60087,7 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var winner = this.calculateWinner(this.state.cells);
+      var winner = this.calculateWinner();
       var status;
 
       if (winner) {
@@ -60164,30 +60193,47 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Main).call(this, props));
 
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleGameStatus", function () {
+      _this.setState({
+        showBoard: !_this.state.showBoard
+      });
+    });
+
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "startGame", function () {
       fetch('/api/game/create').then(function (response) {
         return response.json();
       }).then(function (game) {
         _this.setState({
           game: game,
-          showBoard: true
+          showBoard: true,
+          moveHistory: []
         });
       });
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "continueGame", function (gameId) {
-      fetch('/api/game/' + gameId).then(function (game) {
+      fetch('/api/game/' + gameId).then(function (response) {
+        return response.json();
+      }).then(function (game) {
         _this.setState({
           game: game.game,
           moveHistory: game.moves,
           showBoard: true
         });
       });
-
-      _this.rebuildGameBoard();
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "rebuildGameBoard", function () {});
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "clearHistory", function () {
+      fetch('/api/game/clear-history', {
+        method: 'POST'
+      }).then(function (response) {
+        return response.json();
+      }).then(function (games) {
+        _this.setState({
+          games: games
+        });
+      });
+    });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "buildGameRows", function (game, key) {
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", {
@@ -60200,15 +60246,10 @@ function (_Component) {
       }, "Continue")));
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleGameStatus", function () {
-      _this.setState({
-        showBoard: !_this.state.showBoard
-      });
-    });
-
     _this.state = {
       games: [],
       game: {},
+      moveHistory: [],
       showBoard: false
     };
     return _this;
@@ -60249,8 +60290,19 @@ function (_Component) {
         onClick: function onClick() {
           _this3.startGame();
         }
-      }, "New Game"), this.state.showBoard ? react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Board__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        game: this.state.game
+      }, "New Game"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+        className: "btn btn-error",
+        onClick: function onClick() {
+          if (window.confirm('Are you sure you wish to delete your games history?')) (function () {
+            _this3.clearHistory();
+          });
+        }
+      }, "Clear History"), this.state.showBoard ? react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Board__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        game: this.state.game,
+        history: this.state.moveHistory,
+        complete: function complete() {
+          _this3.completeGame();
+        }
       }) : '', react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("hr", null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h3", null, "Saved Games"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null), lodash__WEBPACK_IMPORTED_MODULE_0__["isEmpty"](this.state.games) ? react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h5", null, "No Game History")) : react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("table", {
         className: "table"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Id"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Name"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Completed"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Started"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Action"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tbody", null, games)));

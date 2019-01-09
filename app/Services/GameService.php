@@ -31,8 +31,24 @@ class GameService
      */
     public function createGame()
     {
-        $game =  new Game();
+        $game = new Game();
 
         return $game;
+    }
+
+    public function completeGame($gameId)
+    {
+        $game = Game::find($gameId);
+
+        $game->completed = true;
+
+        $game->save();
+
+        return $game;
+    }
+
+    public function clearHistory()
+    {
+        Game::query()->delete();
     }
 }
