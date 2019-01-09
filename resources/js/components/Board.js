@@ -7,7 +7,7 @@ class Board extends Component {
         super(props);        
         const { completeGame } = this.props;
         this.state = {
-            cells: Array(9).fill(null),
+            cells: Array(9).fill(''),
             xPlayerNext: true,
             game: props.game,
             moveCount: 0,
@@ -25,23 +25,23 @@ class Board extends Component {
                 cells[element.location] = element.player;
             });
     
-            this.setState({ cells: cells });        
+            this.setState({ cells });        
         }
     }
 
     calculateWinner() {
-        let cells = this.state.cells;
+        const { cells } = this.state;
         let result = null;
 
         const lines = [
-          [0, 1, 2],
-          [3, 4, 5],
-          [6, 7, 8],
-          [0, 3, 6],
-          [1, 4, 7],
-          [2, 5, 8],
-          [0, 4, 8],
-          [2, 4, 6],
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6],
         ];
 
         for (let i = 0; i < lines.length; i++) {
@@ -49,10 +49,6 @@ class Board extends Component {
             if (cells[a] && cells[a] === cells[b] && cells[a] === cells[c]) {
                 result = cells[a];
             }
-        }
-
-        if (result) {
-            this.state.completeGame();
         }
 
         return result;
@@ -101,6 +97,7 @@ class Board extends Component {
         const winner = this.calculateWinner();
         let status;
         if (winner) {
+            this.state.completeGame();
             status = 'Winner: ' + winner;
         } else {
             status = 'Next Player: ' + (this.state.xPlayerNext ? 'X' : '0');
@@ -109,17 +106,17 @@ class Board extends Component {
         return (
             <div>
                 <div className="status">{status}</div>
-                <div className="board-row">
+                <div style={styles.rowStyle}>
                     {this.renderCell(0)}
                     {this.renderCell(1)}
                     {this.renderCell(2)}
                 </div>
-                <div className="board-row">
+                <div style={styles.rowStyle}>
                     {this.renderCell(3)}
                     {this.renderCell(4)}
                     {this.renderCell(5)}
                 </div>
-                <div className="board-row">
+                <div style={styles.rowStyle}>
                     {this.renderCell(6)}
                     {this.renderCell(7)}
                     {this.renderCell(8)}
@@ -128,6 +125,12 @@ class Board extends Component {
         );
     }
 
+}
+
+const styles = {
+    rowStyle: {
+        display: "flex"
+    }
 }
 
 export default Board;

@@ -60005,7 +60005,7 @@ function (_Component) {
 
     var completeGame = _this.props.completeGame;
     _this.state = {
-      cells: Array(9).fill(null),
+      cells: Array(9).fill(''),
       xPlayerNext: true,
       game: props.game,
       moveCount: 0,
@@ -60047,10 +60047,6 @@ function (_Component) {
         }
       }
 
-      if (result) {
-        this.state.completeGame();
-      }
-
       return result;
     }
   }, {
@@ -60084,6 +60080,7 @@ function (_Component) {
       var status;
 
       if (winner) {
+        this.state.completeGame();
         status = 'Winner: ' + winner;
       } else {
         status = 'Next Player: ' + (this.state.xPlayerNext ? 'X' : '0');
@@ -60092,11 +60089,11 @@ function (_Component) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "status"
       }, status), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "board-row"
+        style: styles.rowStyle
       }, this.renderCell(0), this.renderCell(1), this.renderCell(2)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "board-row"
+        style: styles.rowStyle
       }, this.renderCell(3), this.renderCell(4), this.renderCell(5)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "board-row"
+        style: styles.rowStyle
       }, this.renderCell(6), this.renderCell(7), this.renderCell(8)));
     }
   }]);
@@ -60104,6 +60101,11 @@ function (_Component) {
   return Board;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
+var styles = {
+  rowStyle: {
+    display: "flex"
+  }
+};
 /* harmony default export */ __webpack_exports__["default"] = (Board);
 
 /***/ }),
@@ -60127,7 +60129,7 @@ function Cell(props) {
     onClick: props.onClick,
     style: styles.buttonStyle,
     disabled: props.value ? 'disabled' : ''
-  }, props.value);
+  }, props.value ? props.value : ' ');
 }
 
 var styles = {
@@ -60183,7 +60185,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-/* An example React component */
 
 var Main =
 /*#__PURE__*/
@@ -60236,10 +60237,11 @@ function (_Component) {
       }).then(function (response) {
         return response.json();
       }).then(function (games) {
-        var updatedGames = games;
-
         _this.setState({
-          games: updatedGames
+          games: games,
+          game: {},
+          moveHistory: [],
+          showBoard: false
         });
       });
     });

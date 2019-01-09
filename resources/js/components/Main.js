@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Board from './Board';
  
-/* An example React component */
 class Main extends Component {
 
     constructor(props) {
@@ -20,7 +19,7 @@ class Main extends Component {
         fetch('/api/game').then(response => {
             return response.json();
         }).then(games => {
-            this.setState({ games: games });
+            this.setState({ games });
         });
     }
 
@@ -62,8 +61,12 @@ class Main extends Component {
         }).then(response => {
             return response.json();
         }).then(games => {
-            let updatedGames = games;
-            this.setState({ games: updatedGames });
+            this.setState({ 
+                games: games,
+                game: {},
+                moveHistory: [],
+                showBoard: false
+            });
         });
     }
 
