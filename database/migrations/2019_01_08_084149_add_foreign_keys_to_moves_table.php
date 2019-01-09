@@ -14,7 +14,7 @@ class AddForeignKeysToMovesTable extends Migration
     public function up()
     {
         Schema::table('moves', function (Blueprint $table) {
-            $table->foreign('game_id', 'moves_games_fk')->references('id')->on('games')->onUpdate('RESTRICT')->onDelete('RESTRICT');
+            $table->foreign('game_id', 'moves_games_fk')->references('id')->on('games')->onUpdate('RESTRICT')->onDelete('CASCADE');
         });
     }
 

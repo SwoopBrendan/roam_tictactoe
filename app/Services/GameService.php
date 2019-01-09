@@ -44,11 +44,13 @@ class GameService
 
         $game->save();
 
-        return $game;
+        return Game::all();
     }
 
     public function clearHistory()
     {
-        Game::query()->delete();
+        $games = Game::query()->delete();
+
+        return $games;
     }
 }

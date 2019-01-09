@@ -59982,14 +59982,6 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Board).call(this, props));
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "completeGame", function () {
-      fetch('/api/game/complete-game/' + _this.state.game.id, {
-        method: 'POST'
-      }).then(function (response) {
-        return response.json();
-      });
-    });
-
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "saveHistory", function (i) {
       fetch('/api/game', {
         method: 'post',
@@ -60011,13 +60003,14 @@ function (_Component) {
       });
     });
 
-    var complete = props.complete;
+    var completeGame = _this.props.completeGame;
     _this.state = {
       cells: Array(9).fill(null),
       xPlayerNext: true,
       game: props.game,
       moveCount: 0,
-      moveHistory: props.history
+      moveHistory: props.history,
+      completeGame: completeGame
     };
     return _this;
   }
@@ -60055,7 +60048,7 @@ function (_Component) {
       }
 
       if (result) {
-        this.completeGame();
+        this.state.completeGame();
       }
 
       return result;
@@ -60131,10 +60124,21 @@ __webpack_require__.r(__webpack_exports__);
 function Cell(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     className: "square",
-    onClick: props.onClick
+    onClick: props.onClick,
+    style: styles.buttonStyle,
+    disabled: props.value ? 'disabled' : ''
   }, props.value);
 }
 
+var styles = {
+  buttonStyle: {
+    border: '1px outset blue',
+    backgroundColor: 'lightBlue',
+    height: '50px',
+    width: '50px',
+    cursor: 'pointer'
+  }
+};
 /* harmony default export */ __webpack_exports__["default"] = (Cell);
 
 /***/ }),
@@ -60203,7 +60207,10 @@ function (_Component) {
       fetch('/api/game/create').then(function (response) {
         return response.json();
       }).then(function (game) {
+        var games = _this.state.games.concat(game);
+
         _this.setState({
+          games: games,
           game: game,
           showBoard: true,
           moveHistory: []
@@ -60223,22 +60230,36 @@ function (_Component) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "clearHistory", function () {
-      fetch('/api/game/clear-history', {
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "completeGame", function () {
+      fetch('/api/game/complete-game/' + _this.state.game.id, {
         method: 'POST'
       }).then(function (response) {
         return response.json();
       }).then(function (games) {
+        var updatedGames = games;
+
         _this.setState({
-          games: games
+          games: updatedGames
         });
+      });
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "clearHistory", function () {
+      fetch('/api/game/clear-history', {
+        method: 'POST'
+      }).then(function (response) {
+        _this.setState({
+          games: []
+        });
+
+        return response.json();
       });
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "buildGameRows", function (game, key) {
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", {
         key: game.id
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, game.id), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, "Game ", game.id), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, game.completed == 1 ? 'Complete' : 'Incomplete'), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, game.created_at), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, game.completed ? '' : react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, "Game ", game.id), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, game.completed == 1 ? 'Complete' : 'Incomplete'), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, game.created_at), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, game.completed ? '' : react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
         className: "btn btn-success",
         onClick: function onClick() {
           _this.continueGame(game.id);
@@ -60280,6 +60301,11 @@ function (_Component) {
           width: '50%',
           margin: 'auto'
         }
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        style: {
+          display: 'flex',
+          justifyContent: 'center'
+        }
       }, this.state.showBoard ? react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
         className: "btn btn-warning",
         onClick: function onClick() {
@@ -60293,19 +60319,22 @@ function (_Component) {
       }, "New Game"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
         className: "btn btn-error",
         onClick: function onClick() {
-          if (window.confirm('Are you sure you wish to delete your games history?')) (function () {
-            _this3.clearHistory();
-          });
+          if (window.confirm('Are you sure you wish to delete your games history?')) _this3.clearHistory();
         }
-      }, "Clear History"), this.state.showBoard ? react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Board__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }, "Clear History")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        style: {
+          display: 'flex',
+          justifyContent: 'center'
+        }
+      }, this.state.showBoard ? react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Board__WEBPACK_IMPORTED_MODULE_3__["default"], {
         game: this.state.game,
         history: this.state.moveHistory,
-        complete: function complete() {
-          _this3.completeGame();
+        completeGame: function completeGame(e) {
+          _this3.completeGame(e);
         }
-      }) : '', react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("hr", null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h3", null, "Saved Games"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null), lodash__WEBPACK_IMPORTED_MODULE_0__["isEmpty"](this.state.games) ? react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h5", null, "No Game History")) : react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("table", {
+      }) : ''), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("hr", null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h3", null, "Saved Games"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null), lodash__WEBPACK_IMPORTED_MODULE_0__["isEmpty"](this.state.games) ? react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h5", null, "No Game History")) : react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("table", {
         className: "table"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Id"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Name"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Completed"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Started"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Action"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tbody", null, games)));
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Name"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Completed"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Started"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Action"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tbody", null, games)));
     }
   }]);
 

@@ -4,14 +4,15 @@ import Cell from './Cell';
 class Board extends Component {
 
     constructor(props) {
-        super(props);
-        const { complete } = props;
+        super(props);        
+        const { completeGame } = this.props;
         this.state = {
             cells: Array(9).fill(null),
             xPlayerNext: true,
             game: props.game,
             moveCount: 0,
-            moveHistory: props.history
+            moveHistory: props.history,
+            completeGame: completeGame
         }
     }
 
@@ -26,14 +27,6 @@ class Board extends Component {
     
             this.setState({ cells: cells });        
         }
-    }
-
-    completeGame = () => {
-        fetch('/api/game/complete-game/' + this.state.game.id, {
-            method: 'POST'
-        }).then(response => {
-            return response.json();
-        });
     }
 
     calculateWinner() {
@@ -59,7 +52,7 @@ class Board extends Component {
         }
 
         if (result) {
-            this.completeGame()
+            this.state.completeGame();
         }
 
         return result;

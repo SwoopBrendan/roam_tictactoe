@@ -34,7 +34,9 @@ class Main extends Component {
         fetch('/api/game/create').then(response => {
             return response.json();
         }).then(game => {
+            let games = this.state.games.concat(game);
             this.setState({ 
+                games: games,
                 game: game,
                 showBoard: true,
                 moveHistory: []
@@ -54,20 +56,29 @@ class Main extends Component {
         });
     }
 
-    clearHistory = () => {
-        fetch('/api/game/clear-history', {
+    completeGame = () => {
+        fetch('/api/game/complete-game/' + this.state.game.id, {
             method: 'POST'
         }).then(response => {
             return response.json();
         }).then(games => {
-            this.setState({ games: games });
+            let updatedGames = games;
+            this.setState({ games: updatedGames });
+        });
+    }
+
+    clearHistory = () => {
+        fetch('/api/game/clear-history', {
+            method: 'POST'
+        }).then(response => {
+            this.setState({games: []});
+            return response.json();
         });
     }
 
     buildGameRows = (game, key) => {
         return (
             <tr key={game.id}>
-                <td>{game.id}</td>
                 <td>Game {game.id}</td>
                 <td>{game.completed == 1 ? 'Complete' : 'Incomplete'}</td>
                 <td>{game.created_at}</td>
@@ -85,15 +96,19 @@ class Main extends Component {
         return (
             <div style={{width: '50%', margin: 'auto'}}>
 
-                { this.state.showBoard ? (
-                    <button className="btn btn-warning" onClick={() => {this.handleGameStatus()}}>End Game</button>
-                ) : (
-                    <button className="btn btn-primary" onClick={() => {this.startGame()}}>New Game</button>
-                ) }
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                    { this.state.showBoard ? (
+                        <button className="btn btn-warning" onClick={() => {this.handleGameStatus()}}>End Game</button>
+                    ) : (
+                        <button className="btn btn-primary" onClick={() => {this.startGame()}}>New Game</button>
+                    ) }
 
-                <button className="btn btn-error" onClick={() => { if (window.confirm('Are you sure you wish to delete your games history?')) () => {this.clearHistory()} } } >Clear History</button>
+                    <button className="btn btn-error" onClick={() => { if (window.confirm('Are you sure you wish to delete your games history?')) this.clearHistory()}} >Clear History</button>
+                </div>
 
-                { this.state.showBoard ? (<Board game={this.state.game} history={this.state.moveHistory} complete={() => {this.completeGame()}} />) : '' }
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                    { this.state.showBoard ? (<Board game={this.state.game} history={this.state.moveHistory} completeGame={(e) => {this.completeGame(e)}} />) : '' }
+                </div>
 
                 <hr/>
                 <h3>Saved Games</h3>
@@ -108,7 +123,6 @@ class Main extends Component {
                     <table className="table">
                         <thead>
                         <tr>
-                            <th>Id</th>
                             <th>Name</th>
                             <th>Completed</th>
                             <th>Started</th>
