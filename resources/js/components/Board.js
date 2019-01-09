@@ -80,15 +80,15 @@ class Board extends Component {
         }).then(response => {
             return response.json();
         }).then(games => {
-            this.setState({ games: games });
+            this.setState({ games });
         });
     }
 
     renderCell(i) {
         return (
             <Cell 
-                value={this.state.cells[i]} 
-                onClick={() => this.handleClick(i)}
+                value = {this.state.cells[i]} 
+                onClick = {() => this.handleClick(i)}
             />
         );
     }

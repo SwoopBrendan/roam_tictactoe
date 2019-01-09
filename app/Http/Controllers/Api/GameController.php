@@ -19,9 +19,7 @@ class GameController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Return a listing of all games
      */
     public function index()
     {
@@ -31,9 +29,13 @@ class GameController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Create and return a new game instance
+     * {
+     *  id int
+     *  completed tinyint(1)
+     *  createde_at timestamp
+     *  modified_at timestamp
+     * }
      */
     public function create()
     {
@@ -45,10 +47,17 @@ class GameController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Create and store a game move
+     * return move object
+     * {
+     *  id int
+     *  game_id int
+     *  move_number int
+     *  location string
+     *  player string
+     *  created_at timestamp
+     *  modified_at timestamp
+     * }
      */
     public function store(Request $request)
     {
@@ -56,21 +65,39 @@ class GameController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Fetch a game by id and return game object
+     * {
+     *  id int
+     *  completed tinyint(1)
+     *  createde_at timestamp
+     *  modified_at timestamp
+     * }
      */
     public function show($id)
     {
         return $this->gameService->getGameById($id);
     }
 
+    /**
+     * Set a game as complete and return all games
+     * {
+     *  {
+     *   id int
+     *   completed tinyint(1)
+     *   createde_at timestamp
+     *   modified_at timestamp
+     *  },
+     * }
+     */
     public function completeGame($id)
     {
         return $this->gameService->completeGame($id);
     }
 
+    /**
+     * Delete all games from database
+     * TODO: Update DB to soft delete
+     */
     public function clearHistory()
     {
         return $this->gameService->clearHistory();

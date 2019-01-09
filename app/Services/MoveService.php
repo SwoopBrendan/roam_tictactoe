@@ -6,10 +6,13 @@ use Illuminate\Http\Request;
 use App\Game;
 use App\Move;
 
+/**
+ * MoveService class
+ */
 class MoveService
 {
     /**
-     * Store a games move
+     * Store a game move
      */
     public function storeMove(Request $request)
     {
