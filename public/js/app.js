@@ -60232,7 +60232,6 @@ function (_Component) {
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "completeGame", function (winner) {
-      console.log(winner);
       fetch('/api/game/complete-game', {
         method: 'POST',
         headers: {

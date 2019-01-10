@@ -56,7 +56,6 @@ class Main extends Component {
     }
 
     completeGame = winner => {
-        console.log(winner);
         fetch('/api/game/complete-game', {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
