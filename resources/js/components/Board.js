@@ -97,7 +97,7 @@ class Board extends Component {
         const winner = this.calculateWinner();
         let status;
         if (winner) {
-            this.state.completeGame();
+            this.state.completeGame(winner);
             status = 'Winner: ' + winner;
         } else {
             status = 'Next Player: ' + (this.state.xPlayerNext ? 'X' : '0');

@@ -55,9 +55,15 @@ class Main extends Component {
         });
     }
 
-    completeGame = () => {
-        fetch('/api/game/complete-game/' + this.state.game.id, {
-            method: 'POST'
+    completeGame = winner => {
+        console.log(winner);
+        fetch('/api/game/complete-game', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({
+                game_id: this.state.game.id,
+                winner: winner
+            })
         }).then(response => {
             return response.json();
         }).then(games => {
@@ -85,6 +91,7 @@ class Main extends Component {
                 <td>Game {game.id}</td>
                 <td>{game.completed == 1 ? 'Complete' : 'Incomplete'}</td>
                 <td>{game.created_at}</td>
+                <td>{game.winner ? game.winner : 'None'}</td>
                 <td>{game.completed ? '' : (<button className="btn btn-success" onClick={() => {this.continueGame(game.id)}}>Continue</button>)}</td>
             </tr>
         );
@@ -129,6 +136,7 @@ class Main extends Component {
                             <th>Name</th>
                             <th>Completed</th>
                             <th>Started</th>
+                            <th>Winner</th>
                             <th>Action</th>
                         </tr>
                         </thead>

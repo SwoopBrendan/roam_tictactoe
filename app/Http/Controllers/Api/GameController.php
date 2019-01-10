@@ -84,14 +84,15 @@ class GameController extends Controller
      *  {
      *   id int
      *   completed tinyint(1)
+     *   winner string
      *   createde_at timestamp
      *   modified_at timestamp
      *  },
      * }
      */
-    public function completeGame($id)
+    public function completeGame(Request $request)
     {
-        return $this->gameService->completeGame($id);
+        return $this->gameService->completeGame($request);
     }
 
     /**

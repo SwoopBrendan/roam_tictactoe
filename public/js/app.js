@@ -60080,7 +60080,7 @@ function (_Component) {
       var status;
 
       if (winner) {
-        this.state.completeGame();
+        this.state.completeGame(winner);
         status = 'Winner: ' + winner;
       } else {
         status = 'Next Player: ' + (this.state.xPlayerNext ? 'X' : '0');
@@ -60231,9 +60231,17 @@ function (_Component) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "completeGame", function () {
-      fetch('/api/game/complete-game/' + _this.state.game.id, {
-        method: 'POST'
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "completeGame", function (winner) {
+      console.log(winner);
+      fetch('/api/game/complete-game', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          game_id: _this.state.game.id,
+          winner: winner
+        })
       }).then(function (response) {
         return response.json();
       }).then(function (games) {
@@ -60261,7 +60269,7 @@ function (_Component) {
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "buildGameRows", function (game, key) {
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", {
         key: game.id
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, "Game ", game.id), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, game.completed == 1 ? 'Complete' : 'Incomplete'), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, game.created_at), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, game.completed ? '' : react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, "Game ", game.id), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, game.completed == 1 ? 'Complete' : 'Incomplete'), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, game.created_at), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, game.winner ? game.winner : 'None'), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("td", null, game.completed ? '' : react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
         className: "btn btn-success",
         onClick: function onClick() {
           _this.continueGame(game.id);
@@ -60336,7 +60344,7 @@ function (_Component) {
         }
       }) : ''), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("hr", null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h3", null, "Saved Games"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null), lodash__WEBPACK_IMPORTED_MODULE_0__["isEmpty"](this.state.games) ? react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h5", null, "No Game History")) : react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("table", {
         className: "table"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Name"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Completed"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Started"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Action"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tbody", null, games)));
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Name"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Completed"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Started"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Winner"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("th", null, "Action"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("tbody", null, games)));
     }
   }]);
 

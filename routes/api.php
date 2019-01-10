@@ -15,7 +15,8 @@ use Illuminate\Http\Request;
 
 Route::resource('/game', 'Api\GameController');
 Route::post('game/clear-history', 'Api\GameController@clearHistory');
-Route::post('game/complete-game/{id}', 'Api\GameController@completeGame');
+Route::post('game/complete-game', 'Api\GameController@completeGame');
+// Route::post('game/complete-game/{id}', 'Api\GameController@completeGame');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

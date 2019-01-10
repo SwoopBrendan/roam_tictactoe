@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Http\Request;
 use App\Game;
 use App\Move;
 
@@ -48,11 +49,12 @@ class GameService
     /**
      * Set game completion to true
      */
-    public function completeGame($gameId)
+    public function completeGame(Request $request)
     {
-        $game = Game::find($gameId);
+        $game = Game::find($request->get('game_id'));
 
         $game->completed = true;
+        $game->winner = $request->get("winner");
 
         $game->save();
 
